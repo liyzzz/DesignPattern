@@ -9,9 +9,9 @@
         * 代码实现:见factory模块com.liyueze.simpleFactory包和com.liyueze.common包<br>
         * 测试类:在factory模块test下<br>
         * 类图:<br>  
-![image](https://github.com/liyzzz/DesignPattern/blob/master/image/simpleFactory.png)<br>
-**虚线箭头**:指向依赖,依赖是对象之间最弱的一种关联方式，是临时性的关联。代码中一般指由局部变量、函数参数、返回值建立的对于其他对象的调用关系。一个类调用被依赖类中的某些方法而得以完成这个类的一些职责<br>
-**虚线三角**:指向接口；<br>
+        ![image](https://github.com/liyzzz/DesignPattern/blob/master/image/simpleFactory.png)<br>
+        **虚线箭头**:指向依赖,依赖是对象之间最弱的一种关联方式，是临时性的关联。代码中一般指由局部变量、函数参数、返回值建立的对于其他对象的调用关系。一个类调用被依赖类中的某些方法而得以完成这个类的一些职责<br>
+        **虚线三角**:指向接口；<br>
         * 优点:只需传入一个参数就可创建需要对象<br> 
         * 缺点:工厂类职责过重，当增加新产品时需要修改工厂类违背开闭原则，不易于扩展复杂的产品结构<br> 
         * 适宜场景:产品结构较简单,且较稳定<br> 
@@ -23,10 +23,10 @@
         * 代码实现:见factory模块com.liyueze.factoryMethod包和com.liyueze.common包<br>
         * 测试类:在factory模块test下<br>
         * 类图:<br>  
-    ![image](https://github.com/liyzzz/DesignPattern/blob/master/image/FactoryMethod.png)<br>
-    **虚线箭头**:指向依赖,依赖是对象之间最弱的一种关联方式，是临时性的关联。代码中一般指由局部变量、函数参数、返回值建立的对于其他对象的调用关系。一个类调用被依赖类中的某些方法而得以完成这个类的一些职责<br>
-    **虚线三角**:指向泛型(接口)<br>
-    **实线三角**:指向继承<br>
+        ![image](https://github.com/liyzzz/DesignPattern/blob/master/image/FactoryMethod.jpg)<br>
+        **虚线箭头**:指向依赖,依赖是对象之间最弱的一种关联方式，是临时性的关联。代码中一般指由局部变量、函数参数、返回值建立的对于其他对象的调用关系。一个类调用被依赖类中的某些方法而得以完成这个类的一些职责<br>
+        **虚线三角**:指向泛型(接口)<br>
+        **实线三角**:指向继承<br>
          * 优点:解决了简单工厂的问题，加入新产品符合开闭原则(只需要继承工厂基类并重写创建方法)<br> 
          * 缺点:增加了代码结构的复杂度与理解难度<br> 
          * 适宜场景:产品结构不稳定,常常需要扩展<br>
@@ -38,10 +38,10 @@
          * 代码实现:见factory模块com.liyueze.abastractFactory包和com.liyueze.common包<br>
          * 测试类:在factory模块test下<br>
          * 类图:<br>  
-        ![image](https://github.com/liyzzz/DesignPattern/blob/master/image/AbstractFactory.png)<br>
+        ![image](https://github.com/liyzzz/DesignPattern/blob/master/image/AbstractFactory.jpg)<br>
         **虚线箭头**:指向依赖,依赖是对象之间最弱的一种关联方式，是临时性的关联。代码中一般指由局部变量、函数参数、返回值建立的对于其他对象的调用关系。一个类调用被依赖类中的某些方法而得以完成这个类的一些职责<br>
         **虚线三角**:指向泛型(接口)<br>
         * 优点:将一个维度的产品统一到一起创立<br> 
         * 缺点:增加了代码结构的复杂度与理解难度，并且违背开闭原则(例如上例中每个系加入新的C++课程,就需要修改系别工厂代码。但是如果加入新的系只扩展不用修改)<br> 
-        * 适宜场景:产品结构复杂存在项目依赖<br>
+        * 适宜场景:产品结构复杂存在相互依赖<br>
         * 注意:尽量将不易变化的维度放在工厂内部的方法去创建(例如上例中课程种类不易变化),将易变化的维度充当工厂基类(例如上例中系别易变化)<br>  
