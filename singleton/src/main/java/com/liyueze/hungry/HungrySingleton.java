@@ -14,10 +14,11 @@ public class HungrySingleton implements Serializable {
         /**
          * 防止反射破坏
          * synchronized枷锁为了防止多线程（但在饿汉模式中可以不加，因为是static的）
+         * synchronized(class)是类锁
          */
         /*synchronized(HungrySingleton.class){
             if(hungrySingleton !=null){
-                throw new RuntimeException("单例正在被反射破话");
+                throw new RuntimeException("单例正在被反射破坏");
             }
         }*/
     }
@@ -28,6 +29,7 @@ public class HungrySingleton implements Serializable {
     }
 
     //可以防止序列化破坏单例的方法
+    //注意：！！！这个里返回值必须是Object
 //    private  Object readResolve(){
 //        return  hungrySingleton;
 //    }
