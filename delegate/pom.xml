@@ -9,10 +9,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>prototype</artifactId>
+    <artifactId>delegate</artifactId>
     <packaging>war</packaging>
 
-    <name>prototype Maven Webapp</name>
+    <name>delegate Maven Webapp</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
 
@@ -20,7 +20,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <servlet.api.version>2.4</servlet.api.version>
     </properties>
+
 
     <dependencies>
         <dependency>
@@ -29,10 +31,19 @@
             <version>4.11</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- requied start -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>${servlet.api.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- requied end -->
     </dependencies>
 
     <build>
-        <finalName>prototype</finalName>
+        <finalName>delegate</finalName>
         <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
             <plugins>
                 <plugin>

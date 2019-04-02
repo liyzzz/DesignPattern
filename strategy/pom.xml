@@ -9,10 +9,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>prototype</artifactId>
+    <artifactId>strategy</artifactId>
     <packaging>war</packaging>
 
-    <name>prototype Maven Webapp</name>
+    <name>strategy Maven Webapp</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
 
@@ -32,7 +32,7 @@
     </dependencies>
 
     <build>
-        <finalName>prototype</finalName>
+        <finalName>strategy</finalName>
         <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
             <plugins>
                 <plugin>
