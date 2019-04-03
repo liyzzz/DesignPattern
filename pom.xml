@@ -13,6 +13,9 @@
       <module>prototype</module>
       <module>strategy</module>
       <module>delegate</module>
+      <module>Decorator</module>
+    <module>templete</module>
+      <module>Adapter</module>
   </modules>
   <packaging>pom</packaging>
 
