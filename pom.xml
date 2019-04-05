@@ -16,6 +16,7 @@
       <module>Decorator</module>
     <module>templete</module>
       <module>Adapter</module>
+      <module>observer</module>
   </modules>
   <packaging>pom</packaging>
 
