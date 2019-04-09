@@ -1,6 +1,6 @@
 package com.liyueze.staticProxy.templeteProxy;
 
-public abstract class UserDaoProxy {
+public abstract class TemplateUserDaoProxy {
     public void begin(){
         System.out.println("事务开启123");
     }

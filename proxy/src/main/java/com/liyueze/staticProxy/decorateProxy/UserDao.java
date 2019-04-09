@@ -1,6 +1,6 @@
-package com.liyueze.staticProxy.templeteProxy;
+package com.liyueze.staticProxy.decorateProxy;
 
-public class UserDao extends TemplateUserDaoProxy {
+public class UserDao implements IDao {
     @Override
     public String save(String id)
     {
