@@ -1,8 +1,8 @@
-package com.liyueze.dynamicProxy.jdkDynamicProxyCore;
+package com.liyueze.dynamicProxy.jdkDynamicProxyCode;
 
 
 
-public class jdkCoreTest {
+public class jdkCodeTest {
     public static void main(String[] args) {
         IDao userDao= new UserDao();
         MyInvocationHandler myInvocationHandler=new MyInvocationHandler();

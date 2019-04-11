@@ -1,4 +1,4 @@
-package com.liyueze.dynamicProxy.jdkDynamicProxyCore;
+package com.liyueze.dynamicProxy.jdkDynamicProxyCode;
 
 import java.lang.reflect.Method;
 
@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
  * 工厂方法,由每个InvocationHandler自己生成代理对象
  */
 
-public class MyInvocationHandler implements InvocationHandleCore {
+public class MyInvocationHandler implements InvocationHandleCode {
 
     //被代理的对象，可以是任意一个对象
     private Object target;
@@ -19,7 +19,7 @@ public class MyInvocationHandler implements InvocationHandleCore {
         //第一个参数是指定代理类的类加载器
         //第二个参数是代理类需要实现的接口）
         //第三个参数是invocation handler，用来处理方法的调用。这里传入我们自己实现的handler
-        return ProxyCore.newProxyInstance(clazz.getClassLoader(), clazz.getInterfaces(), this);
+        return ProxyCode.newProxyInstance(clazz.getClassLoader(), clazz.getInterfaces(), this);
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.liyueze.dynamicProxy.jdkDynamicProxyCore;
+package com.liyueze.dynamicProxy.jdkDynamicProxyCode;
 
 /**
  * 自己实现jdk代理

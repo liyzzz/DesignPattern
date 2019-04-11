@@ -1,24 +1,22 @@
-package com.liyueze.dynamicProxy.jdkDynamicProxyCore;
+package com.liyueze.dynamicProxy.jdkDynamicProxyCode;
 
-import javax.tools.DiagnosticCollector;
 import javax.tools.JavaCompiler;
 import javax.tools.JavaCompiler.CompilationTask;
-import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.nio.charset.Charset;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
-public class ProxyCore {
+public class ProxyCode {
 
     private static final String ln = "\r\n";
-    private static final String PACKAGE="com.liyueze.dynamicProxy.jdkDynamicProxyCore";
+    private static final String PACKAGE="com.liyueze.dynamicProxy.jdkDynamicProxyCode";
     private static final String PROXY_CLASS_NAME="$Proxy0";
 
     //设置基本类型的映射关系
@@ -30,12 +28,12 @@ public class ProxyCore {
 
     //返回代理的类
     public static Object newProxyInstance(ClassLoader loader, Class<?>[] interfaces,
-                                          InvocationHandleCore h) throws IllegalArgumentException {
+                                          InvocationHandleCode h) throws IllegalArgumentException {
         try {
             //1、动态生成源代码.java文件
             String src = generateSrc(interfaces);
             //2.将java持久化，为后面编译成class文件做准备
-            String filePath = ProxyCore.class.getResource("").getPath();
+            String filePath = ProxyCode.class.getResource("").getPath();
             File f = new File(filePath + "$Proxy0.java");
             FileWriter fw = new FileWriter(f);
             fw.write(src);
@@ -44,14 +42,13 @@ public class ProxyCore {
             //3、把生成的.java文件编译成.class文件
             //获得java编译器
             JavaCompiler compiler=ToolProvider.getSystemJavaCompiler();
-            //创建诊断信息监听器, 用于收集诊断信息.JavaFileObject - 表示一个java源文件对象
-            DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
+
             // Java源文件管理类, 管理一系列JavaFileObject.
             //getStandardFileManager的参数依次是
-            // 诊断监听器（若为null，则使用编译器的默认方法来报告诊断信息），
+            // 诊断监听器（若为null，则使用编译器的默认方法（既：idea的控制台）来报告诊断信息），
             // 格式化诊断信息时要应用的语言环境（如果为 null，则使用默认语言环境），
             // 用于解码字节的字符集（如果为 null，则使用平台默认的字符集）
-            StandardJavaFileManager manager=compiler.getStandardFileManager(diagnostics, Locale.CHINESE, Charset.forName("UTF-8"));
+            StandardJavaFileManager manager=compiler.getStandardFileManager(null, null, null);
             //这里可以传入多个file迭代：例如： manager.getJavaFileObjects(f,new File("Hello.java"));
             Iterable it = manager.getJavaFileObjects(f);
             //获取编译任务
@@ -62,18 +59,34 @@ public class ProxyCore {
             //options - 编译器选项；null 表示没有选项
             //classes - 类名称（用于注释处理），null 表示没有类名称
             //compilationUnits - 要编译的编译单元；null 表示没有编译单元
-            CompilationTask task = compiler.getTask(null,manager,diagnostics,null,null,it);
+            CompilationTask task = compiler.getTask(null,manager,null,null,null,it);
             //执行编译
             task.call();
             //关闭fileManager
             manager.close();
 
             //4。将编译生产的。class文件加载到jvm中
-
-            Class c=loader.loadClass(PACKAGE+PROXY_CLASS_NAME);
+            Class c=loader.loadClass(PACKAGE+"."+PROXY_CLASS_NAME);
+            //因为编译生成的.class的文件在appClassLoader的加载路径中，所以不需要写新的类加载器
+            //打印出传递过来的classLoader的加载路径，确实存在编译生成的.class的文件的路径
+            /*URL[] urls=((URLClassLoader)loader).getURLs();
+            for(URL url:urls){
+                System.out.println(url);
+            }*/
+            Constructor constructor = c.getConstructor(InvocationHandleCode.class);
+            f.delete();
+            return constructor.newInstance(h);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
             e.printStackTrace();
         }
 
@@ -99,9 +112,9 @@ public class ProxyCore {
         sb.append( "{" + ln);
 
         //开始写类的具体内容
-        sb.append("InvocationHandleCore h;" + ln);
+        sb.append("InvocationHandleCode h;" + ln);
         //持有InvocationHandleCore的引用，在构造方法里传递
-        sb.append("public $Proxy0(InvocationHandleCore h) { " + ln);
+        sb.append("public $Proxy0(InvocationHandleCode h) { " + ln);
         sb.append("this.h = h;");
         sb.append("}" + ln);
         //实现第一个接口中每个的方法
@@ -115,7 +128,7 @@ public class ProxyCore {
             //方法参数名列表
             StringBuffer paramNameslist = new StringBuffer();
             for (Class<?> clazz : params) {
-                paramTypeslist.append(clazz.getName() + ",");
+                paramTypeslist.append(clazz.getName()+".class" + ",");
                 paramslist.append(clazz.getName() + " " + toLowerFirstCase(clazz.getSimpleName()) + ",");
                 paramNameslist.append(toLowerFirstCase(clazz.getSimpleName()) + ",");
             }
@@ -134,7 +147,7 @@ public class ProxyCore {
             sb.append("try{" + ln);
             sb.append("Method m = " + interfaces[0].getName() + ".class.getMethod(\"" + m.getName() + "\",new Class[]{" + paramTypeslist.toString() + "});" + ln);
             //如果是void不返回，如果有返回值类型调用invocationHandle的invoke方法，并将其值返回回去
-            sb.append(m.getReturnType() == void.class ? " " : "return ");
+            sb.append(m.getReturnType() == void.class ? " " : "return ("+m.getReturnType().getName()+")");
             //调用invocationHandle的invoke方法
             sb.append("this.h.invoke(this,m,new Object[]{" + paramNameslist.toString() + "});" + ln);
             //抛出各种异常
