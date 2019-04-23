@@ -16,6 +16,7 @@ import java.lang.reflect.Modifier;
  */
 
 @Component
+//该注解相当于<aop:aspect ref="xmlProxy"></aop:config>
 @Aspect
 public class Proxy {
 
