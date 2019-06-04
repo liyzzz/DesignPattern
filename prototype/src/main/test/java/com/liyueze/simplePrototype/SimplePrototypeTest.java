@@ -9,11 +9,11 @@ public class SimplePrototypeTest {
         peoplePrototype.setAge(18);
         PeoplePrototype prototype=(PeoplePrototype)peoplePrototype.clone();
         System.out.println(prototype);
-        //两者地址不相同
+        //两者地址相同
         System.out.println(prototype.getName()==peoplePrototype.getName());
         //修改其中一个地址的对象
         peoplePrototype.getName().append("明");
-        //另一个未改变
+        //另一个改变
         System.out.println(prototype);
         System.out.println(peoplePrototype);
 
